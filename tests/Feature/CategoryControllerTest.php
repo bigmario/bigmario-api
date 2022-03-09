@@ -18,7 +18,7 @@ class CategoryControllerTest extends TestCase
             User::factory()->create(),
             ['*']
         );
-        Category::factory(5)->create();
+        Category::factory(4)->create();
 
         $response = $this->getJson('/api/categories');
 
