@@ -3,20 +3,21 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_index()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
         Category::factory(5)->create();
 
         $response = $this->getJson('/api/categories');
@@ -28,6 +29,11 @@ class CategoryControllerTest extends TestCase
 
     public function test_create_new_category()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $data = [
             'name' => 'Hola',
         ];
@@ -40,20 +46,31 @@ class CategoryControllerTest extends TestCase
 
     public function test_update_category()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         /** @var Category $category */
         $category = Category::factory()->create();
 
         $data = [
-            'name' => 'Update categories',
+            'name' => 'Update Category',
         ];
 
         $response = $this->patchJson("/api/categories/{$category->getKey()}", $data);
+
         $response->assertSuccessful();
         // $response->assertHeader('content-type', 'application/json');
     }
 
     public function test_show_category()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         /** @var Category $category */
         $category = Category::factory()->create();
 
@@ -65,6 +82,11 @@ class CategoryControllerTest extends TestCase
 
     public function test_delete_category()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         /** @var Category $category */
         $category = Category::factory()->create();
 
